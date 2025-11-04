@@ -92,3 +92,34 @@ def update_order(
     db.refresh(order)
 
     return order
+
+
+@router.delete("/{order_id}/cancel", response_model=OrderResponse)
+def cancel_order(
+    order_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Cancel an order - sets status to cancelled"""
+    order = db.query(Order).filter(Order.id == order_id).first()
+
+    if not order:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Order not found"
+        )
+
+    # TODO: add auth check
+
+    # Can only cancel pending or processing orders
+    if order.status in ["completed", "cancelled"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Cannot cancel order with status: {order.status}"
+        )
+
+    order.status = "cancelled"
+    db.commit()
+    db.refresh(order)
+
+    return order
