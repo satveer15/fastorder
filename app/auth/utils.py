@@ -16,6 +16,8 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    # TODO: add expiration
+    # Create JWT with 15 min expiry - keeps it short to limit damage if token leaks
+    expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, JWT_SECRET, algorithm="HS256")
     return encoded_jwt
