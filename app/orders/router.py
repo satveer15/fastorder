@@ -56,7 +56,13 @@ def get_order(
             detail="Order not found"
         )
 
-    # TODO: check if order belongs to user
+    # Make sure user can only access their own orders
+    if order.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to access this order"
+        )
+
     return order
 
 
@@ -76,7 +82,11 @@ def update_order(
             detail="Order not found"
         )
 
-    # TODO: authorization check here
+    if order.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to modify this order"
+        )
 
     # Update fields if provided
     if order_data.item_name is not None:
@@ -109,7 +119,11 @@ def cancel_order(
             detail="Order not found"
         )
 
-    # TODO: add auth check
+    if order.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to cancel this order"
+        )
 
     # Can only cancel pending or processing orders
     if order.status in ["completed", "cancelled"]:
