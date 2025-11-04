@@ -3,13 +3,14 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import User
 from app.schemas import UserCreate, UserResponse
+from app.auth.utils import hash_password
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: UserCreate, db: Session = Depends(get_db)):
-    # Check if email exists
+    # Check if email is already taken
     existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(
@@ -17,11 +18,10 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
             detail="Email already registered"
         )
 
-    # TODO: hash password
     new_user = User(
         name=user_data.name,
         email=user_data.email,
-        password_hash=user_data.password  # storing plain password for now, will fix
+        password_hash=hash_password(user_data.password)
     )
 
     db.add(new_user)
