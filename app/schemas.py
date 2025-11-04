@@ -8,6 +8,11 @@ class UserCreate(BaseModel):
     password: str = Field(..., min_length=6)
 
 
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
 class UserResponse(BaseModel):
     id: int
     name: str
@@ -16,3 +21,8 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
