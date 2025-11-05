@@ -35,6 +35,7 @@ api.log
 .coverage
 htmlcov/
 .tox/
+test.db
 
 # OS
 .DS_Store
