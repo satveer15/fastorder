@@ -1,6 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from app.jobs.order_processor import process_pending_orders, complete_processing_orders
+from app.logging_config import logger
 
 scheduler = BackgroundScheduler()
 
@@ -25,11 +26,11 @@ def start_scheduler():
         )
 
         scheduler.start()
-        print("Background scheduler started with order processing jobs")
+        logger.info("Background scheduler started with order processing jobs")
 
 
 def stop_scheduler():
     """Shutdown the scheduler"""
     if scheduler.running:
         scheduler.shutdown()
-        print("Background scheduler stopped")
+        logger.info("Background scheduler stopped")

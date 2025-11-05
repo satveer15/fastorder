@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models import Order
+from app.logging_config import logger
 
 
 def process_pending_orders():
@@ -26,10 +27,10 @@ def process_pending_orders():
 
         if processed_count > 0:
             db.commit()
-            print(f"Processed {processed_count} pending orders at {datetime.utcnow()}")
+            logger.info(f"Processed {processed_count} pending orders")
 
     except Exception as e:
-        print(f"Error processing orders: {e}")
+        logger.error(f"Error processing orders: {e}")
         db.rollback()
     finally:
         db.close()
@@ -57,10 +58,10 @@ def complete_processing_orders():
 
         if completed_count > 0:
             db.commit()
-            print(f"Completed {completed_count} processing orders at {datetime.utcnow()}")
+            logger.info(f"Completed {completed_count} processing orders")
 
     except Exception as e:
-        print(f"Error completing orders: {e}")
+        logger.error(f"Error completing orders: {e}")
         db.rollback()
     finally:
         db.close()
