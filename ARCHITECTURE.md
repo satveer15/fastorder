@@ -198,6 +198,17 @@ Got tests for:
 
 Run with `pytest tests/ -v`
 
+Each test uses its own database that gets cleaned up after, so tests don't interfere with each other.
+
+## Error Handling
+
+Global exception handlers catch:
+- Database errors (SQLAlchemy exceptions)
+- JWT/auth errors
+- Unexpected exceptions
+
+This gives consistent error responses across the API instead of letting exceptions bubble up with default messages.
+
 ## What Would Change for Production?
 
 **Database:**
