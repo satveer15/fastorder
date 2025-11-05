@@ -1,4 +1,5 @@
 import pytest
+import os
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -23,6 +24,9 @@ def test_db():
     finally:
         db.close()
         Base.metadata.drop_all(bind=engine)
+        # Clean up test db file
+        if os.path.exists("test.db"):
+            os.remove("test.db")
 
 
 @pytest.fixture(scope="function")
