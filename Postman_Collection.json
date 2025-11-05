@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Order Management API",
-    "description": "Complete API collection for testing the Order Management system",
+    "description": "Complete API collection for testing the Order Management system. Includes auth endpoints, order CRUD, and health checks. Token auto-saved after login.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
