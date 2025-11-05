@@ -6,9 +6,10 @@ A FastAPI-based order management system with JWT auth, SQLite, and background pr
 
 - JWT authentication (15 min token expiry)
 - Order CRUD operations (create, list, cancel)
-- Background job that processes orders every 2 minutes
+- Background job that processes orders automatically
 - bcrypt password hashing
 - Pydantic validation
+- Full test coverage with pytest
 - Auto-generated API docs at `/docs`
 
 ## Tech Stack
